@@ -1,0 +1,44 @@
+﻿@page "{handler?}"
+@model Web.Pages.IndexModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <h1>Customers List</h1>
+    <table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Credit Limit</th>
+            <th scope="col">Sales Rep</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var customer in Model.Customers)
+        {
+            <tr>
+                <th scope="row">@customer.GetStringOrEmpty(Data.Entities.Customer.ID)</th>
+                <td>@customer.GetStringOrEmpty(Data.Entities.Customer.NAME)</td>
+                <td>@customer.GetStringOrEmpty(Data.Entities.Customer.CREDITLIMIT)</td>
+                <td>@customer.GetStringOrEmpty(Data.Entities.Customer.SALESREP)</td>
+                <td>
+                    <nav class="nav">
+                        <a class="nav-link" href="/edit/@customer.GetStringOrEmpty(Data.Entities.Customer.ID)">Edit</a>
+                    </nav>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+    </table>
+    <div class="mt-4">
+        <a href="/create" class="btn btn-primary">Create Customer</a>
+    </div>
+</div>
+
+

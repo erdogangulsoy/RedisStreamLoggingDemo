@@ -1,0 +1,76 @@
+﻿@page "/edit/{id}"
+@model Web.Pages.EditModel
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <h1>Edit Customer</h1>
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                <div class="form-group">
+                    <label for="tbName">Name</label>
+                    <input type="text" class="form-control" id="tbName" name="name" value="@Model.Customer.GetStringOrEmpty(Data.Entities.Customer.NAME)">
+                </div>
+                <div class="form-group">
+                    <label for="tbCreditLimit">Credit Limit</label>
+                    <input type="number" class="form-control" id="tbCreditLimit" name="creditlimit" value="@Model.Customer.GetStringOrEmpty(Data.Entities.Customer.CREDITLIMIT)">
+                </div>
+                <div class="form-group">
+                    <label for="ddSalesRep">Sales Representative</label>
+                    <select class="custom-select" id="ddSalesRep" name="salesrep">
+                        @if (Model.Customer.GetStringOrEmpty(Data.Entities.Customer.SALESREP) == "Ahmet")
+                        {
+                            <option value="Ahmet" selected>Ahmet</option>
+                            <option value="Mehmet">Mehmet</option>
+                        }
+                        else
+                        {
+                            <option value="Ahmet">Ahmet</option>
+                            <option value="Mehmet" selected>Mehmet</option>
+                        }
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="update();">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+@section footer{
+    <script>
+        var csrftoken = null;
+        var editurl = "/edit/@Model.Customer.GetStringOrEmpty(Data.Entities.Customer.ID)";
+
+        $(document).ready(function () {
+            csrftoken = $("input[name='__RequestVerificationToken']").val();
+        });
+
+        function update() {
+            $.ajax({
+                type: "POST",
+                url: editurl,
+                headers: {
+                    "X-CSRF-TOKEN": csrftoken
+                },
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (response) {
+                    window.location.href = "/";
+                },
+                failure: function (response) {
+                    //
+                }
+            });
+
+        }
+
+       
+    </script>
+}

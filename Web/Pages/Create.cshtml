@@ -1,0 +1,66 @@
+﻿@page "{handler?}"
+@model Web.Pages.CreateModel
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <h1>Create Customer</h1>
+    <div class="card">
+        <div class="card-body">
+            <form method="post">
+                <div class="form-group">
+                    <label for="tbName">Name</label>
+                    <input type="text" class="form-control" id="tbName" name="name">
+                </div>
+                <div class="form-group">
+                    <label for="tbCreditLimit">Credit Limit</label>
+                    <input type="number" class="form-control" id="tbCreditLimit" name="creditlimit">
+                </div>
+                <div class="form-group">
+                    <label for="ddSalesRep">Sales Representative</label>
+                    <select class="custom-select" id="ddSalesRep" name="salesrep">
+                        <option selected>Select the Rep</option>
+                        <option value="Ahmet">Ahmet</option>
+                        <option value="Mehmet">Mehmet</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="save();">Create</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+@section footer{
+    <script>
+        var csrftoken = null;
+
+        $(document).ready(function () {
+            csrftoken = $("input[name='__RequestVerificationToken']").val();
+        });
+
+        function save() {
+            $.ajax({
+                type: "POST",
+                url: "/create",
+                headers: {
+                    "X-CSRF-TOKEN": csrftoken
+                },
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (response) {
+                    window.location.href="/";
+                },
+                failure: function (response) {
+                   //
+                }
+            });
+
+        }
+    </script>
+}
